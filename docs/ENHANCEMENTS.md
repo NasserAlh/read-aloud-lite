@@ -101,3 +101,14 @@ should be weighed against that budget.
 Windows' "Natural" neural voices remain out of reach regardless of design.
 They are not exposed to Chrome's TTS layer, and the Web Speech API does not
 reach them either, so no amount of restructuring recovers them.
+
+## Shipped
+
+- **A real icon.** Replaced Chrome's auto-generated grey `R` placeholder with a
+  document-and-sound-arcs mark in the palette's own `#245ea8` and `#6fa3e8`.
+  Master artwork is `src/icons/icon.svg`; 16, 32, 48 and 128 PNGs are exported
+  from it because Chrome rejects SVG in the `icons` and `default_icon` keys.
+  The 16 and 32 slots use a deliberately simplified variant — fewer text lines,
+  fewer arcs — since they are the 1x and 2x toolbar sizes and detail turns to
+  mud there. Checked against both light and dark toolbars, which Chrome does
+  not auto-invert.

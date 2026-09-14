@@ -42,6 +42,7 @@ Note that Windows' newer "Natural" neural voices are exposed to Edge but not alw
 - `manifest.json` — permissions, context menus, keyboard commands
 - `src/background.js` — service worker: text extraction, chunking, `chrome.tts` calls
 - `src/popup.html` / `src/popup.css` / `src/popup.js` — toolbar controls
+- `src/icons/` — `icon.svg` is the master artwork; the PNGs are exported from it, since Chrome does not accept SVG in the manifest
 - `docs/ENHANCEMENTS.md` — proposed follow-up work
 
 `manifest.json` stays at the root because Chrome requires it there; everything else lives under `src/`.

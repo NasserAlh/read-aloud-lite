@@ -3,13 +3,24 @@
   "name": "Read Aloud Lite",
   "version": "1.0.0",
   "description": "Reads the current page or any selected text aloud using the voices installed on your computer. No account or API key required.",
+  "icons": {
+    "16": "src/icons/icon16.png",
+    "32": "src/icons/icon32.png",
+    "48": "src/icons/icon48.png",
+    "128": "src/icons/icon128.png"
+  },
   "permissions": ["tts", "contextMenus", "activeTab", "scripting", "storage"],
   "background": {
     "service_worker": "src/background.js"
   },
   "action": {
     "default_popup": "src/popup.html",
-    "default_title": "Read Aloud Lite"
+    "default_title": "Read Aloud Lite",
+    "default_icon": {
+      "16": "src/icons/icon16.png",
+      "32": "src/icons/icon32.png",
+      "48": "src/icons/icon48.png"
+    }
   },
   "commands": {
     "read-selection-or-page": {
