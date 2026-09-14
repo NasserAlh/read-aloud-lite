@@ -1,0 +1,10 @@
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.crx
+*.pem
+*.zip
+read-aloud-lite-BUILD-PROMPT.md

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="panel">
+      <div class="actions">
+        <button id="read-selection" class="primary">Read selection</button>
+        <button id="read-page">Read whole page</button>
+      </div>
+
+      <div class="transport">
+        <button id="pause" class="icon" title="Pause">Pause</button>
+        <button id="resume" class="icon" title="Resume">Resume</button>
+        <button id="stop" class="icon stop" title="Stop">Stop</button>
+      </div>
+
+      <label class="field">
+        <span>Voice</span>
+        <select id="voice">
+          <option value="">Match the page language</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Speed <output id="rate-out">1.0×</output></span>
+        <input id="rate" type="range" min="0.5" max="3" step="0.1" value="1" />
+      </label>
+
+      <label class="field">
+        <span>Pitch <output id="pitch-out">1.0</output></span>
+        <input id="pitch" type="range" min="0.5" max="2" step="0.1" value="1" />
+      </label>
+
+      <p id="status" class="status" role="status"></p>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

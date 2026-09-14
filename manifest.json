@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Read Aloud Lite",
+  "version": "1.0.0",
+  "description": "Reads the current page or any selected text aloud using the voices installed on your computer. No account or API key required.",
+  "permissions": ["tts", "contextMenus", "activeTab", "scripting", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Read Aloud Lite"
+  },
+  "commands": {
+    "read-selection-or-page": {
+      "suggested_key": { "default": "Ctrl+Shift+U" },
+      "description": "Read the selection, or the whole page if nothing is selected"
+    },
+    "stop-reading": {
+      "suggested_key": { "default": "Ctrl+Shift+X" },
+      "description": "Stop reading"
+    }
+  }
+}
