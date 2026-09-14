@@ -40,5 +40,8 @@ Note that Windows' newer "Natural" neural voices are exposed to Edge but not alw
 ## Files
 
 - `manifest.json` — permissions, context menus, keyboard commands
-- `background.js` — service worker: text extraction, chunking, `chrome.tts` calls
-- `popup.html` / `popup.css` / `popup.js` — toolbar controls
+- `src/background.js` — service worker: text extraction, chunking, `chrome.tts` calls
+- `src/popup.html` / `src/popup.css` / `src/popup.js` — toolbar controls
+- `docs/ENHANCEMENTS.md` — proposed follow-up work
+
+`manifest.json` stays at the root because Chrome requires it there; everything else lives under `src/`.

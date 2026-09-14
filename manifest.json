@@ -5,10 +5,10 @@
   "description": "Reads the current page or any selected text aloud using the voices installed on your computer. No account or API key required.",
   "permissions": ["tts", "contextMenus", "activeTab", "scripting", "storage"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "src/popup.html",
     "default_title": "Read Aloud Lite"
   },
   "commands": {
