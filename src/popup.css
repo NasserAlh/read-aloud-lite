@@ -45,6 +45,9 @@ button {
 button:hover { border-color: var(--accent); }
 button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
+button:disabled { opacity: 0.4; cursor: default; }
+button:disabled:hover { border-color: var(--line); }
+
 button.primary {
   border-color: var(--accent);
   color: var(--accent);

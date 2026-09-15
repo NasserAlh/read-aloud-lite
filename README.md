@@ -21,6 +21,8 @@ Unpacked extensions survive browser restarts. Chrome shows a "Disable developer 
 | Stop | `Ctrl+Shift+X`, or right-click → **Stop reading** |
 | Pause / resume / speed / voice | Click the toolbar icon |
 
+While speech is active the toolbar icon carries a badge — `▶` when reading, `II` when paused — and the popup greys out whichever transport buttons do not currently apply.
+
 Shortcuts can be reassigned at `chrome://extensions/shortcuts`.
 
 ## Voices

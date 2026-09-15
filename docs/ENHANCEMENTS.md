@@ -7,7 +7,7 @@ and 2 fix actual defects; the rest add capability.
 ## 1. Per-language voice pinning
 
 **Problem.** Pinning a voice disables language detection entirely. In
-[background.js:111-112](../src/background.js#L111-L112):
+[background.js:173-174](../src/background.js#L173-L174):
 
 ```js
 if (opts.voiceName) options.voiceName = opts.voiceName;
@@ -28,15 +28,15 @@ language toggle.
 
 ## 2. Surface failures instead of going silent
 
-**Problem.** `readPage()` at [background.js:75-82](../src/background.js#L75-L82) calls
+**Problem.** `readPage()` at [background.js:131-138](../src/background.js#L131-L138) calls
 `chrome.scripting.executeScript` with no try/catch, unlike `getSelection()`
-which guards at [background.js:63-73](../src/background.js#L63-L73). On a `chrome://`
+which guards at [background.js:119-129](../src/background.js#L119-L129). On a `chrome://`
 page, the Web Store, or a PDF, the rejection is swallowed by the async IIFE in
 the message handler, `sendResponse` never runs, and the popup status line stays
 blank. The user gets no speech and no explanation.
 
 The empty-extraction case has the same shape: `if (text) speak(text)` at
-[background.js:81](../src/background.js#L81) exits quietly when a page yields nothing.
+[background.js:137](../src/background.js#L137) exits quietly when a page yields nothing.
 
 **Fix.** Wrap the `executeScript` call, and return a message the popup can
 display — "This page does not allow reading" for the restricted case, "No
@@ -45,20 +45,7 @@ and keyboard paths through the same handling so they are not silent either.
 
 **Effort.** Small. Mostly error plumbing already modelled by `getSelection`.
 
-## 3. Playback state in the popup
-
-**Problem.** The popup has no idea whether speech is active. Pause and Resume
-are always enabled, and reopening the popup mid-read shows a neutral panel with
-no indication anything is playing.
-
-**Fix.** Query `chrome.tts.isSpeaking()` on popup open and enable or disable the
-transport buttons accordingly. Add a toolbar badge while speech is active, via
-`chrome.action.setBadgeText`, so state is visible without opening the popup.
-
-**Effort.** Small to medium. The badge needs `chrome.tts.speak`'s `onEvent`
-callback to know when the queue drains.
-
-## 4. Sentence highlighting
+## 3. Sentence highlighting
 
 The flagship feature for a reading tool: highlight the sentence, or word, as it
 is spoken. `chrome.tts.speak` accepts an `onEvent` callback that reports
@@ -75,22 +62,15 @@ extraction would need to be rebuilt to retain node offsets.
 
 **Effort.** Large. Treat as a v2 project, not an increment.
 
-## 5. Skip back / forward one sentence
+## 4. Skip back / forward one sentence
 
 The most-wanted control when attention drifts, and cheap given the existing
-design: `chunk()` at [background.js:119-136](../src/background.js#L119-L136) already
+design: `chunk()` at [background.js:192-209](../src/background.js#L192-L209) already
 produces an ordered array. Track the active index through `onEvent`, then
 re-queue from `index - 1` or `index + 1` on demand.
 
 **Effort.** Medium. Requires holding chunk state in the service worker and
 tolerating its termination between utterances.
-
-## Cleanup
-
-The message handler calls `sendResponse` twice on the nothing-selected path —
-once at [background.js:51](../src/background.js#L51) and again at the unconditional
-[background.js:56](../src/background.js#L56). It works today because Chrome ignores the
-second call, but it is fragile and should be an early return.
 
 ## Notes on scope
 
@@ -112,3 +92,16 @@ reach them either, so no amount of restructuring recovers them.
   fewer arcs — since they are the 1x and 2x toolbar sizes and detail turns to
   mud there. Checked against both light and dark toolbars, which Chrome does
   not auto-invert.
+
+- **Playback state in the popup.** The worker now tracks `idle` / `speaking` /
+  `paused`, mirrors it to a toolbar badge, and pushes changes to the popup,
+  which greys out transport buttons that do not apply and shows "Reading…" or
+  "Paused". Only the final chunk's `end` event clears the state, so the badge
+  survives the gaps between queued utterances. Reads carry a session number so
+  callbacks from a superseded or stopped read cannot resurrect stale state, and
+  startup reconciles against `chrome.tts.isSpeaking()` because the worker can be
+  evicted while the engine keeps talking.
+
+  This also retired the **Cleanup** item: adding `get-state` required early
+  returns in the message handler, which removed the double `sendResponse` on the
+  nothing-selected path.
